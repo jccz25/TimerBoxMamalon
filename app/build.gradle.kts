@@ -3,7 +3,8 @@ plugins {
 }
 
 android {
-    namespace = "com.example.timerboxmamalon"
+    //namespace = "com.example.timerboxmamalon"
+    namespace = "com.jccz25.timerboxmamalon"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -11,7 +12,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.timerboxmamalon"
+        applicationId = "com.jccz25.timerboxmamalon"
+        //applicationId = "com.example.timerboxmamalon"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -22,13 +24,28 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    //buildTypes {
+    //    release {
+    //        optimization {
+    //            enable = false
+    //        }
+    //    }
+    //}
     buildTypes {
         release {
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = true  // Esto ofusca el código y quita lo que no usas
+            isShrinkResources = true // Borra imágenes/layouts sin usar
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            // Este se queda así, no le muevas
+            isDebuggable = true
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

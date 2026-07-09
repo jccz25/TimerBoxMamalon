@@ -1,4 +1,4 @@
-package com.example.timerboxmamalon
+package com.jccz25.timerboxmamalon
 
 import org.junit.Test
 

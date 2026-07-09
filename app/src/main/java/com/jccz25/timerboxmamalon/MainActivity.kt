@@ -1,11 +1,11 @@
-package com.example.timerboxmamalon
+package com.jccz25.timerboxmamalon
 
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.timerboxmamalon.databinding.ActivityMainBinding
+import com.jccz25.timerboxmamalon.databinding.ActivityMainBinding
 import android.media.MediaPlayer
 import android.media.ToneGenerator
 import android.media.AudioManager
@@ -147,6 +147,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun avanzarWorkout() {
         if (esDescansoSet) {
+            // Terminó el descanso largo entre sets
             esDescansoSet = false
             setActual++
             ejercicioActual = 1
@@ -156,24 +157,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (esTrabajo) {
-            esTrabajo = false // Toca descanso entre ejercicios
-            iniciarSiguienteIntervalo()
+            // Terminó un periodo de trabajo
+            if (ejercicioActual < ejerciciosTotales) {
+                // Aún quedan ejercicios, descanso corto entre ejercicios
+                esTrabajo = false
+                iniciarSiguienteIntervalo()
+            } else {
+                // Era el último ejercicio del set
+                if (setActual < setsTotales) {
+                    // Hay más sets, pasamos directamente al descanso largo (sin el corto)
+                    esDescansoSet = true
+                    iniciarSiguienteIntervalo()
+                } else {
+                    // Era el último set y último ejercicio
+                    terminarWorkout()
+                }
+            }
         } else {
-            // Terminó descanso, siguiente ejercicio
+            // Terminó el descanso corto entre ejercicios, siguiente ejercicio del mismo set
             esTrabajo = true
             ejercicioActual++
-
-            if (ejercicioActual > ejerciciosTotales) {
-                // Terminó el set
-                if (setActual >= setsTotales) {
-                    terminarWorkout() // Se acabó todo
-                } else {
-                    esDescansoSet = true // Toca descanso entre sets
-                    iniciarSiguienteIntervalo()
-                }
-            } else {
-                iniciarSiguienteIntervalo() // Siguiente ejercicio
-            }
+            iniciarSiguienteIntervalo()
         }
     }
 
@@ -201,6 +205,7 @@ class MainActivity : AppCompatActivity() {
         timer?.cancel()
         estaPausado = false
         binding.rootLayout.setBackgroundColor(Color.parseColor("#4CAF50"))
+        binding.tvCopyright.setTextColor(Color.parseColor("#8A000000"))
         binding.configLayout.visibility = View.VISIBLE
         binding.timerLayout.visibility = View.GONE
         binding.btnPlay.text = "PLAY"
@@ -210,6 +215,7 @@ class MainActivity : AppCompatActivity() {
         binding.tvEstado.text = "TERMINADO"
         binding.tvReloj.text = "✓"
         binding.rootLayout.setBackgroundColor(Color.BLUE)
+        binding.tvCopyright.setTextColor(Color.WHITE)
     }
 
     override fun onDestroy() {

@@ -1,4 +1,4 @@
-package com.example.timerboxmamalon
+package com.jccz25.timerboxmamalon
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
