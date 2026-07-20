@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.configLayout.visibility = View.GONE
         binding.timerLayout.visibility = View.VISIBLE
+        binding.root.keepScreenOn = true // MANTENER PANTALLA ENCENDIDA
 
         //iniciarSiguienteIntervalo()
         iniciarPreparacion()
@@ -204,6 +205,7 @@ class MainActivity : AppCompatActivity() {
     private fun detenerTodo() {
         timer?.cancel()
         estaPausado = false
+        binding.root.keepScreenOn = false // PERMITIR QUE LA PANTALLA SE APAGUE
         binding.rootLayout.setBackgroundColor(Color.parseColor("#4CAF50"))
         binding.tvCopyright.setTextColor(Color.parseColor("#8A000000"))
         binding.configLayout.visibility = View.VISIBLE
@@ -212,10 +214,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun terminarWorkout() {
+        sonarCampana() // ¡Campanazo final!
         binding.tvEstado.text = "TERMINADO"
         binding.tvReloj.text = "✓"
         binding.rootLayout.setBackgroundColor(Color.BLUE)
         binding.tvCopyright.setTextColor(Color.WHITE)
+        binding.root.keepScreenOn = false // YA TERMINÓ, YA SE PUEDE APAGAR
     }
 
     override fun onDestroy() {
